@@ -26,10 +26,7 @@ t_musica *musica_criar(int id, const char *titulo, const char *artista, int dura
 }
 
 void musica_destruir(void *carga) { 
-    /* TODO M01 */ 
-
     assert(carga!=NULL);
 
     free((t_musica*)carga);
-
 }
