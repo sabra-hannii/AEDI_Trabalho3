@@ -1,0 +1,9 @@
+# Executar na raiz do projeto: make -f missoes/M02/Makefile.incremental test_m02
+CC ?= cc
+CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -g
+.PHONY: test_m02
+build/m02_incremental: missoes/M02/TESTE_INCREMENTAL_M02.c src/lse.c include/lse.h
+	@mkdir -p build
+	$(CC) $(CFLAGS) -Iinclude missoes/M02/TESTE_INCREMENTAL_M02.c src/lse.c -o $@
+test_m02: build/m02_incremental
+	./build/m02_incremental
