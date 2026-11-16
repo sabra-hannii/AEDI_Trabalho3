@@ -10,7 +10,6 @@ typedef struct elem {
 
 struct lse {
     t_elem *inicio;
-    t_elem *fim;
     int tamanho;
     /* M08 (otimizacao opcional): t_elem *fim; */
 };
@@ -21,7 +20,6 @@ t_lse *lse_criar(void) {
 
     if(novaLista != NULL) {
         novaLista -> inicio = NULL;
-        novaLista -> fim = NULL;
         novaLista -> tamanho = 0;
     }
 
@@ -54,6 +52,20 @@ void lse_destruir(t_lse *l, void (*destruir)(void *)) {
     (void)l; 
     (void)destruir;
 
+    if (l == NULL) {
+        return;
+    }
+
+    t_elem *atual = l -> inicio;
+
+    while(atual != NULL) {
+        t_elem *proximo = atual -> prox;
+
+        destruir(atual -> carga);
+        free(atual);
+
+        atual = proximo;
+    }
 
     free(l);
 }
