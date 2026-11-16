@@ -1,6 +1,7 @@
 #include "lse.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <assert.h>
 
 /* Representacao interna: NAO mover para lse.h. */
 typedef struct elem {
@@ -28,7 +29,8 @@ t_lse *lse_criar(void) {
 
 int lse_tamanho(const t_lse *l) { 
     (void)l; 
-
+    assert(l!=NULL);
+    
     return l -> tamanho; 
 } /* TODO M03 */
 
@@ -41,7 +43,45 @@ void *lse_primeiro(const t_lse *l) {
 } /* TODO M03 */
 
 
-int lse_inserir_inicio(t_lse *l, void *c) { (void)l; (void)c; return 0; } /* TODO M04 */
+
+void lse_percorrer(const t_lse *lista, t_lse_visitar cb_visitar){   
+    t_elem *atual = lista->inicio;
+    while (atual !=NULL){
+        cb_visitar(atual->carga);
+        atual = atual->prox;
+    }
+
+}/* TODO M02/M03 */
+
+t_elem* criar_elem_lse(void* carga){
+
+    t_elem*novo = (sizeof(t_elem));
+    novo->carga = carga;
+    novo->prox = NULL;
+    return novo;
+}
+
+
+int lse_inserir_inicio(t_lse *lista, void *c) { 
+    t_elem *novo = lse_criar();
+    if (novo == NULL){
+        return 0;   
+    }
+    (void)lista; 
+    (void)c; 
+    if (lista->inicio == NULL){
+        lista->inicio= novo;
+    }else{
+        novo->prox = lista->inicio;
+        lista->inicio = novo;
+    }
+    lista->tamanho++;
+    return 1; 
+
+    
+} 
+
+
 int lse_inserir_fim(t_lse *l, void *c) { (void)l; (void)c; return 0; } /* TODO M04 */
 void *lse_remover_inicio(t_lse *l) { (void)l; return NULL; } /* TODO M04 */
 void *lse_buscar(const t_lse *l, const void *ch, t_comparador cmp) { (void)l; (void)ch; (void)cmp; return NULL; } /* TODO M04 */

@@ -12,6 +12,7 @@ int lse_tamanho(const t_lse *lista);
 
 void *lse_primeiro(const t_lse *lista);
 
+
 int lse_inserir_inicio(t_lse *lista, void *carga);
 int lse_inserir_fim(t_lse *lista, void *carga);
 
@@ -22,5 +23,10 @@ void *lse_remover(t_lse *lista, const void *chave, t_comparador comparar);
 int lse_inserir_ordenado(t_lse *lista, void *carga, t_comparador comparar);
 
 void lse_destruir(t_lse *lista, void (*destruir_carga)(void *));
+
+
+typedef void(*t_lse_visitar)(void* carga);
+void lse_percorrer(const t_lse *lista, t_lse_visitar cb_visitar);
+
 
 #endif
