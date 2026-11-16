@@ -4,6 +4,14 @@
 /* Representacao opaca: t_elem e campos de t_lse ficam em lse.c. */
 
 typedef struct lse t_lse;
+
+typedef struct elem t_elem;
+
+typedef struct lse{
+    t_elem* inicio;
+    int tamanho;
+} t_lse;
+
 typedef int (*t_comparador)(const void *carga, const void *chave);
 
 t_lse *lse_criar(void);
@@ -28,5 +36,6 @@ void lse_destruir(t_lse *lista, void (*destruir_carga)(void *));
 typedef void(*t_lse_visitar)(void* carga);
 void lse_percorrer(const t_lse *lista, t_lse_visitar cb_visitar);
 
+typedef void(*t_lse_destruir_carga)(void*carga);
 
 #endif
