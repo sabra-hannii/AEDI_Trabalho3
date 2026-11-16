@@ -1,0 +1,11 @@
+# M03: pode ser incluido pelo Makefile principal OU executado isoladamente.
+# Na raiz: make -f missoes/M03/Makefile.incremental test_m03
+M03_CC := gcc
+M03_CFLAGS := -std=c11 -Wall -Wextra -Wpedantic -g -Iinclude
+TESTES_MISSOES += test_m03
+.PHONY: test_m03
+build/test_m03_incremental: missoes/M03/test_m03.c src/lse.c include/lse.h
+	@mkdir -p build
+	$(M03_CC) $(M03_CFLAGS) missoes/M03/test_m03.c src/lse.c -o $@
+test_m03: build/test_m03_incremental
+	./build/test_m03_incremental
