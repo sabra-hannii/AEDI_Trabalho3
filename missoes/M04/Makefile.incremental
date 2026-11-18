@@ -1,0 +1,10 @@
+# M04 — executavel independente; pode ser incluido no Makefile principal.
+M04_CC := gcc
+M04_CFLAGS := -std=c11 -Wall -Wextra -Wpedantic -g -Iinclude
+TESTES_MISSOES += test_m04
+.PHONY: test_m04
+build/test_m04_incremental: missoes/M04/test_m04.c src/lse.c include/lse.h
+	@mkdir -p build
+	$(M04_CC) $(M04_CFLAGS) missoes/M04/test_m04.c src/lse.c -o $@
+test_m04: build/test_m04_incremental
+	./build/test_m04_incremental

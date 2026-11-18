@@ -82,8 +82,41 @@ int lse_inserir_inicio(t_lse *lista, void *c) {
 } 
 
 
-int lse_inserir_fim(t_lse *l, void *c) { (void)l; (void)c; return 0; } /* TODO M04 */
-void *lse_remover_inicio(t_lse *l) { (void)l; return NULL; } /* TODO M04 */
+int lse_inserir_fim(t_lse *lista, void *carga) {
+    t_elem* novo = criar_elem_lse(carga);
+
+    if(novo ==NULL)
+        return 0;
+
+    if(lista -> inicio == NULL) {
+        lista -> inicio = novo;
+    } else {
+        t_elem* cam = lista -> inicio;
+        while (cam -> prox != NULL) {
+            cam = cam -> prox;
+        }
+
+        cam -> prox = novo;
+    }
+
+    lista -> tamanho++;
+
+    return 1;
+} /* TODO M04 */
+void *lse_remover_inicio(t_lse *lista) { 
+
+    if(lista -> tamanho == 0) {
+        return NULL;
+    }
+
+    t_elem* prim = lista -> inicio;
+    lista -> inicio = prim -> prox;
+
+    void* carga = prim -> prox;
+    free(prim);
+
+    return NULL;
+} /* TODO M04 */
 void *lse_buscar(const t_lse *l, const void *ch, t_comparador cmp) { (void)l; (void)ch; (void)cmp; return NULL; } /* TODO M04 */
 void *lse_remover(t_lse *l, const void *ch, t_comparador cmp) { (void)l; (void)ch; (void)cmp; return NULL; } /* TODO M04 */
 int lse_inserir_ordenado(t_lse *l, void *c, t_comparador cmp) { (void)l; (void)c; (void)cmp; return 0; } /* TODO M05 */
