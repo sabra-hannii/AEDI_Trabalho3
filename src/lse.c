@@ -34,15 +34,12 @@ int lse_tamanho(const t_lse *l) {
     return l -> tamanho; 
 } /* TODO M03 */
 
-
 void *lse_primeiro(const t_lse *l) {
     (void)l; 
     
     return l -> inicio -> carga; 
     
 } /* TODO M03 */
-
-
 
 void lse_percorrer(const t_lse *lista, t_lse_visitar cb_visitar){   
     t_elem *atual = lista->inicio;
@@ -60,7 +57,6 @@ t_elem* criar_elem_lse(void* carga){
     novo->prox = NULL;
     return novo;
 }
-
 
 int lse_inserir_inicio(t_lse *lista, void *c) { 
     t_elem *novo = lse_criar();
@@ -81,8 +77,9 @@ int lse_inserir_inicio(t_lse *lista, void *c) {
     
 } 
 
-
 int lse_inserir_fim(t_lse *lista, void *carga) {
+    assert(lista != NULL);
+
     t_elem* novo = criar_elem_lse(carga);
 
     if(novo ==NULL)
@@ -103,7 +100,9 @@ int lse_inserir_fim(t_lse *lista, void *carga) {
 
     return 1;
 } /* TODO M04 */
+
 void *lse_remover_inicio(t_lse *lista) { 
+    assert(lista != NULL);
 
     if(lista -> tamanho == 0) {
         return NULL;
@@ -111,14 +110,51 @@ void *lse_remover_inicio(t_lse *lista) {
 
     t_elem* prim = lista -> inicio;
     lista -> inicio = prim -> prox;
+    lista -> tamanho--;
 
     void* carga = prim -> prox;
     free(prim);
 
     return NULL;
 } /* TODO M04 */
-void *lse_buscar(const t_lse *l, const void *ch, t_comparador cmp) { (void)l; (void)ch; (void)cmp; return NULL; } /* TODO M04 */
-void *lse_remover(t_lse *l, const void *ch, t_comparador cmp) { (void)l; (void)ch; (void)cmp; return NULL; } /* TODO M04 */
+
+void *lse_buscar(const t_lse *lista, const void *chave, t_comparador cmp) {
+    assert(lista != NULL);
+
+    t_elem* atual = lista -> inicio;
+
+    while (atual != NULL){
+
+        if(cmp(atual -> carga, chave) == 0) {
+            return atual -> carga;
+        }
+
+        atual = atual -> prox;
+    }
+     
+    return NULL;
+} /* TODO M04 */
+
+void *lse_remover(t_lse *lista, const void *chave, t_comparador cmp) { 
+
+    t_elem* atual = lista -> inicio;
+
+    while (atual != NULL){
+        t_elem* ant = atual;
+        if(cmp(atual -> carga, chave) == 0) {
+
+            ant -> prox = atual -> prox;
+            
+            free(atual);
+            return 1;
+        }
+        
+        atual = atual -> prox;
+    }
+
+    return NULL;
+} /* TODO M04 */
+
 int lse_inserir_ordenado(t_lse *l, void *c, t_comparador cmp) { (void)l; (void)c; (void)cmp; return 0; } /* TODO M05 */
 
 void lse_destruir(t_lse *l, void (*destruir)(void *)) { 
