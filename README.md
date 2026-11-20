@@ -1,6 +1,15 @@
 # MiniPlayer — ICC002 (2026/2)
 Projeto integrador progressivo, em duplas, em C. Reprodução **simulada**.
 
+## Integrantes
+
+- Davi Teles de Moraes
+- Sebastian Lima Guedes 
+
+## Repositório
+
+- https://github.com/sabra-hannii/AEDI_Trabalho3
+
 ## Compilação
 `make` e `./build/miniplayer`.
 
