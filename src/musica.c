@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 #include "musica.h"
 #include <string.h>
 #include <stddef.h>
@@ -20,7 +21,6 @@ t_musica *musica_criar(int id, const char *titulo, const char *artista, int dura
     (char*)titulo;
     (char*)artista; 
     (int)duracao;
-    imprimir_musica(nova);
 
     return nova; 
 }
