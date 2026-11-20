@@ -172,9 +172,6 @@ int lse_inserir_ordenado(t_lse *l, void *c, t_comparador cmp) {
 } /* TODO M05 */
 
 void lse_destruir(t_lse *l, void (*destruir)(void *)) {
-    (void) l;
-    (void) destruir;
-
     if (l == NULL) {
         return;
     }
@@ -184,7 +181,9 @@ void lse_destruir(t_lse *l, void (*destruir)(void *)) {
     while (atual != NULL) {
         t_elem *proximo = atual->prox;
 
-        destruir(atual->carga);
+        if (destruir != NULL) {
+            destruir(atual->carga);
+        }
         free(atual);
 
         atual = proximo;
