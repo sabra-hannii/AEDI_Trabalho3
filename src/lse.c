@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
+
 /* Representacao interna: NAO mover para lse.h. */
 typedef struct elem {
     void *carga;
@@ -149,10 +150,6 @@ void *lse_remover(t_lse *lista, const void *chave, t_comparador cmp) {
                 lista->inicio = atual->prox;
             } else {
                 ant->prox = atual->prox;
-            }
-
-            if (atual == lista->fim) {
-                lista->fim = ant;
             }
 
             void *carga = atual->carga;
