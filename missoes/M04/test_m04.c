@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include "lse.h"
+#include "musica.h"
 
 static int comparar_int(const void *carga, const void *chave) {
     int a = *(const int *)carga, b = *(const int *)chave;
