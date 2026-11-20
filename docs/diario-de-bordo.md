@@ -57,9 +57,8 @@
 
 - **Problema encontrado e solução:**
   1. A compilação falhava com `error: redefinition of 'struct lse'`, porque a struct estava definida em `lse.h` e de novo em `lse.c`. Isso também quebrava o tipo opaco. **Solução:** removemos a definição do `.h`.
-  3. `lse_destruir` chamava `destruir(...)` sem checar se era `NULL`, então `lse_destruir(l, NULL)` travava. **Solução:** só chama o callback se ele não for `NULL`.
-  4. `lse_tamanho` e `lse_primeiro` tinham `(void)l;` sobrando dos stubs. **Solução:** removido.
-
+  2. `lse_destruir` chamava `destruir(...)` sem checar se era `NULL`, então `lse_destruir(l, NULL)` travava. **Solução:** só chama o callback se ele não for `NULL`.
+    
 - **Evidências de testes:**
   - **Antes:** `make -f missoes/M02/Makefile.incremental test_m02` falhava na compilação (`redefinition of 'struct lse'`).
   - **Depois:** o teste compila e imprime `M02: teste de contrato passou.`
@@ -92,8 +91,7 @@
 - **Problema encontrado e solução:**
   1. `criar_elem_lse` fazia `t_elem *novo = (sizeof(t_elem));`, atribuindo um número a um ponteiro, sem `malloc`. **Solução:** `malloc(sizeof(t_elem))` com verificação de `NULL`.
   2. `lse_inserir_inicio` chamava `lse_criar()` (que cria uma *lista*) em vez de criar um nó, e ignorava a carga recebida. **Solução:** usar `criar_elem_lse(carga)` e religar `novo->prox = lista->inicio`.
-  3. `lse_inserir_inicio` não tratava `lista == NULL`. **Solução:** retorna 0.
-  4. `lse_percorrer` não tratava `lista` ou `cb_visitar` `NULL`. **Solução:** retorna sem fazer nada.
+
 
 - **Evidências de testes:**
   - **Antes:** `make -f missoes/M03/Makefile.incremental test_m03` falhava na compilação (`redefinition of 'struct lse'`, corrigido na M02). Depois disso, o esqueleto do kit falhava de propósito com `assert(1==0)`.
