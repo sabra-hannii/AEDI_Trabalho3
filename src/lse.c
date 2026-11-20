@@ -135,21 +135,36 @@ void *lse_buscar(const t_lse *lista, const void *chave, t_comparador cmp) {
     return NULL;
 } /* TODO M04 */
 
-void *lse_remover(t_lse *lista, const void *chave, t_comparador cmp) { 
+void *lse_remover(t_lse *lista, const void *chave, t_comparador cmp) {
+    if (lista == NULL || cmp == NULL)
+        return NULL;
 
-    t_elem* atual = lista -> inicio;
+    t_elem *atual = lista->inicio;
+    t_elem *ant = NULL;
 
-    while (atual != NULL){
-        t_elem* ant = atual;
-        if(cmp(atual -> carga, chave) == 0) {
+    while (atual != NULL) {
+        if (cmp(atual->carga, chave) == 0) {
 
-            ant -> prox = atual -> prox;
-            
+            if (ant == NULL) {
+                lista->inicio = atual->prox;
+            } else {
+                ant->prox = atual->prox;
+            }
+
+            if (atual == lista->fim) {
+                lista->fim = ant;
+            }
+
+            void *carga = atual->carga;
+
             free(atual);
-            return 1;
+            lista->tamanho--;
+
+            return carga;
         }
-        
-        atual = atual -> prox;
+
+        ant = atual;
+        atual = atual->prox;
     }
 
     return NULL;
