@@ -104,3 +104,40 @@
   M04: corrigir `lse_remover_inicio` e `lse_remover`, revisar `lse_buscar` e `lse_inserir_fim`, e rodar `test_m04`.
 
 ---
+
+## Missão M04 — 20/11
+
+- **Integrantes e papéis:**
+  - DAVI TELES DE MORAES — CODIFICAÇÃO
+  - SEBASTIAN LIMA GUEDES — REVISÃO
+
+- **Objetivo:**
+  Completar as operações de inserção no fim, busca e remoção da lista: `lse_inserir_fim`, `lse_remover_inicio`, `lse_buscar` e `lse_remover`, mantendo a lista genérica (`void *`) e `t_elem` privado em `lse.c`.
+
+- **O que implementamos:**
+  1. `lse_inserir_fim`: cria o nó, percorre a cadeia até o último nó e liga o novo ao final; em lista vazia, `inicio` passa a apontar para o novo nó. Incrementa `tamanho`. Retorna 1 no sucesso e 0 se `lista == NULL` ou se faltar memória.
+  2. `lse_remover_inicio`: desliga o primeiro nó, avança `inicio`, decrementa `tamanho`, libera só o nó e devolve a carga. Devolve `NULL` se a lista for `NULL` ou estiver vazia.
+  3. `lse_buscar`: percorre do início ao fim chamando `comparar(carga, chave)` e devolve a primeira carga para a qual o resultado é 0; devolve `NULL` se não houver, se `lista == NULL` ou se `comparar == NULL`. Não altera a lista.
+  4. `lse_remover`: usa um ponteiro para o nó anterior para religar a cadeia (se o removido era o primeiro, avança `inicio`), decrementa `tamanho`, libera só o nó e devolve a carga. Remove apenas a primeira ocorrência.
+  5. Completamos `missoes/M04/test_m04.c`, que no kit tinha trechos marcados como "implementar", e acrescentamos os testes de chave duplicada, remoção seguida de reinserção, busca/remoção de `t_musica` por `id` e argumentos inválidos.
+
+- **Decisão técnica e justificativa:**
+  O comparador devolve 0 quando a carga casa com a chave, e a chave é opaca para a lista; assim a mesma lista serve a `int` e a `t_musica` sem conhecer o tipo. Em chave duplicada, busca e remoção atuam só na **primeira** ocorrência, do início para o fim. A lista libera apenas o **nó** em `lse_remover` e `lse_remover_inicio`: a carga volta ao chamador, que decide se a destrói. `lse_inserir_fim` é O(n) porque a lista ainda não tem ponteiro `fim` (otimização opcional da M08).
+
+  Sobre a carga `NULL` aceita na M03: `lse_primeiro`, `lse_buscar` e `lse_remover` devolvem `NULL` tanto para "não encontrado" quanto para "encontrado, com carga `NULL`", e só `lse_tamanho` distingue os casos. Documentamos isso nos contratos e os testes de busca e remoção não usam carga `NULL`.
+
+- **Problema encontrado e solução:**
+  1. `lse_remover_inicio` devolvia `NULL` em vez da carga do nó removido, então quem chamava perdia a carga. **Solução:** guardar `prim->carga` antes de liberar o nó e devolvê-la. As demais funções (`lse_inserir_fim`, `lse_buscar`, `lse_remover`) foram revisadas contra os contratos (confirmar se houve alguma correção em `lse_remover`).
+  2. O teste inicializava `t_musica a={11,"A"}`, o que gerava aviso de inicializador incompleto com `-Wextra`. **Solução:** `{11,"A","",0}`, sem alterar nenhuma asserção.
+
+- **Evidências de testes:**
+  - **Antes:** o esqueleto do kit tinha trechos "implementar" sem asserções, então não exercitava inserção no fim, remoção nem busca.
+  - **Depois:** `make -f missoes/M04/Makefile.incremental test_m04` imprime `M04: todos os testes passaram.`
+  - Testes cobertos: inserção no fim em lista vazia e não vazia, busca de primeiro/meio/último e de chave ausente (sem alterar a lista), remoção do meio, do fim, do início e do único elemento, chave inexistente em lista vazia, `lse_remover_inicio` até esvaziar (com dois elementos de mesmo valor), chave duplicada (só a primeira ocorrência), remoção seguida de reinserção, busca e remoção de `t_musica` por `id`, e argumentos inválidos (lista `NULL`, lista vazia, comparador `NULL`).
+  - Regressão: `test_m02` e `test_m03` continuam passando.
+  - Execução com AddressSanitizer e UBSan: sem erros nem vazamentos.
+
+- **Próxima ação:**
+  M05: implementar `lse_inserir_ordenado` (inserção estável, depois dos iguais) e escrever os testes correspondentes.
+
+  ---
